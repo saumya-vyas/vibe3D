@@ -1,0 +1,156 @@
+.canvas-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* Hide tldraw's top-left menu/navigation box */
+.tlui-navigation-zone,
+.tlui-menu-zone {
+  display: none !important;
+}
+
+.enhance-button {
+  position: absolute;
+  left: calc(50% - 80px); /* Offset by half the gap between buttons */
+  top: 10px;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 12px 24px;
+  background-color: #fff;
+  border: 1px solid #111;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #111;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.2s cubic-bezier(.4,1.3,.7,1);
+  opacity: 0.92;
+  pointer-events: auto;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.enhance-button2 {
+  position: absolute;
+  left: calc(50% + 80px); /* Offset by half the gap between buttons */
+  top: 10px;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 12px 24px;
+  background-color: #fff;
+  border: 1px solid #111;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #111;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.2s cubic-bezier(.4,1.3,.7,1);
+  opacity: 0.92;
+  pointer-events: auto;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.enhance-button i,
+.enhance-button2 i {
+  font-size: 16px;
+}
+
+.enhance-button:focus,
+.enhance-button2:focus,
+.enhance-button:focus-visible,
+.enhance-button2:focus-visible {
+  /* outline: 1px auto -webkit-focus-ring-color; */
+  
+}
+
+.enhance-button:hover,
+.enhance-button:focus,
+.enhance-button:active {
+  border: 1px solid #111;
+}
+
+.enhance-button2:hover,
+.enhance-button2:focus,
+.enhance-button2:active {
+  border: 1px solid #111;
+}
+
+.enhance-button3 {
+  position: absolute;
+  right: 240px;
+  top: 25px;
+  z-index: 100;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  padding : 0px;
+  cursor: pointer;
+  color: #292d39;
+  font-weight: 900;
+  font-size: 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+  opacity: 1;
+  pointer-events: auto;
+  width: 30px;
+  height: 30px;
+
+}
+
+.enhance-button-3d {
+  position: absolute;
+  top: 10px;
+  transform: translateX(-50%);
+  z-index: 100;
+  background-color: #4ca1f1;
+  border: none;
+  border-radius: 50%;
+  padding : 0px;
+  cursor: pointer;
+  color: white;
+  font-weight: 900;
+  font-size: 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+  opacity: 1;
+  pointer-events: auto;
+  width: 60px;
+  height: 60px;
+}
+
+.enhance-button.active {
+  background-color: #816dde;
+  color: white;
+  opacity: 1;
+  border : none
+}
+.enhance-button2.active {
+  background-color: #4ca1f1;
+  color: white;
+  opacity: 1;
+  border : none
+}
+
+.popup-message {
+  position: absolute;
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 101;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+} 
