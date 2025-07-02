@@ -44,7 +44,7 @@ export default function Experience() {
                     shadow-bias={-0.0001} 
                 />
                 {Plane ? (
-                    <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                    <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
                         <planeGeometry args={[500, 500]} />
                         <meshStandardMaterial color={PlaneColor} />
                     </mesh>

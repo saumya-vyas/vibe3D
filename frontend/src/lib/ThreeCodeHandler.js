@@ -19,7 +19,8 @@ export default function ThreeCodeHandler({id, status, data, type}) {
         return;
     }
 
-    let threeJsCode = extractThreeJS(code);
+    let threeJsCode = extractCode(code);
+    threeJsCode = extractThreeJS(threeJsCode);
 
     editor.updateShape({
         id : shapeId,
@@ -29,6 +30,20 @@ export default function ThreeCodeHandler({id, status, data, type}) {
         }
     })
     
+}
+
+function extractCode(content){
+    const match = content.match(/```javascript\s*([\s\S]*?)\s*```/i);
+    if (match && match[1]) {
+      return match[1].trim();
+    }
+    // Fallback: match any code block
+    const fallback = content.match(/```([\s\S]*?)```/);
+    if (fallback && fallback[1]) {
+      return fallback[1].trim();
+    }
+    // Fallback: return as-is
+    return content.trim();
 }
 
 function extractThreeJS(code){

@@ -16,6 +16,8 @@ export default async function ThreeDbutton(selectedIds, selectionBounds, editor,
         image : base64
     })
 
+    console.log('step1')
+
     const newtaskId = response.data.taskId  
 
     //Loading shape

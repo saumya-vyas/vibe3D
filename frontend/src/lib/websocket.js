@@ -37,6 +37,7 @@ class WebSocketManager {
             }
           }
         }else{
+          console.log(response);
           console.log('-*-')
         }
         
