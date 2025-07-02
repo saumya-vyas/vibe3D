@@ -5,33 +5,17 @@ class RedisClient{
     constructor(){
         //for blocking operations (e.g. lPush, brPop)
         this.redis = createClient({
-            socket: {
-                host: process.env.REDIS_HOST || 'localhost',
-                port: process.env.REDIS_PORT || 6379,
-            }
-        })
-
-        // Separate Redis client for hSet operations
+            url: process.env.REDIS_URL
+        });
         this.hsetRedis = createClient({
-            socket: {
-                host: process.env.REDIS_HOST || 'localhost',
-                port: process.env.REDIS_PORT || 6379,
-            }
-        })
-
+            url: process.env.REDIS_URL
+        });
         this.publisher = createClient({
-            socket: {
-                host: process.env.REDIS_HOST || 'localhost',
-                port: process.env.REDIS_PORT || 6379,
-            }
-        })
-
+            url: process.env.REDIS_URL
+        });
         this.subscriber = createClient({
-            socket: {
-                host: process.env.REDIS_HOST || 'localhost',
-                port: process.env.REDIS_PORT || 6379,
-            }
-        })
+            url: process.env.REDIS_URL
+        });
 
         this.connect()
         console.log('Connected to Redis')
