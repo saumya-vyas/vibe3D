@@ -1,3 +1,6 @@
+const WS_URL = import.meta.env.VITE_WS_URL;
+
+
 class WebSocketManager {
   constructor() {
     this.ws = null
@@ -12,7 +15,7 @@ class WebSocketManager {
       return
     }
 
-    this.ws = new WebSocket('ws://localhost:3000')
+    this.ws = new WebSocket(WS_URL)
 
     this.ws.onopen = () => {
       console.log('WebSocket connected')
