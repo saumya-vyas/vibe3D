@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'http://localhost:3000'
+const baseURL = process.env.VITE_WS_URL
 const api = axios.create({baseURL})
 
 export default api

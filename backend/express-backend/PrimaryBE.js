@@ -48,7 +48,7 @@ app.post('/parse', async (req, res) => {
 
 async function main(){
     try{
-        const httpServer = app.listen(3000);
+        const httpServer = app.listen(process.env.PORT);
         setupWebSocketServer(httpServer)
     }catch(err){
         console.error('Error connecting to Redis:', err);
