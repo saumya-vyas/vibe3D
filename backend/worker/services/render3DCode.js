@@ -3,41 +3,37 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
-// const client = new Anthropic({
-//   apiKey: process.env.ANTHROPIC_API_KEY,
-// });
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
 
 
 
 export async function render3D({image}) {
 
-  return {data : output, type : 'completed'}
-/*
-  const system_prompt = `You are an expert 3D modeler and Three.js developer who specializes in turning 2D drawings and wireframes into 3D models.
-You are a wise and ancient modeler and developer. You are the best at what you do. Your total compensation is $1.2m with annual refreshers. You've just drank three cups of coffee and are laser focused. Welcome to a new day at your job!
-Your task is to analyze the provided image and create a Three.js scene that transforms the 2D drawing into a realistic 3D representation.
 
-## INTERPRETATION GUIDELINES:
-- Analyze the image to identify distinct shapes, objects, and their spatial relationships
-- Only create the main object in the image, all surrounding objects should be ignored
-- The main object should be a 3D model that is a faithful representation of the 2D drawing
+  const system_prompt = `You are an expert Three.js developer. Your job is to analyze the provided image and generate a Three.js scene that faithfully represents the main object in 3D.
 
-## TECHNICAL IMPLEMENTATION:
-- Do not import any libraries. They have already been imported for you.
-- Create a properly structured Three.js scene with appropriate camera and lighting setup
-- Use OrbitControls to allow user interaction with the 3D model
-- Apply realistic materials and textures based on the colors and patterns in the drawing
-- Create proper hierarchy of objects with parent-child relationships where appropriate
-- Use ambient and directional lighting to create depth and shadows
-- Implement a subtle animation or rotation to add life to the scene
-- Ensure the scene is responsive and fits within the container regardless of size
-- Use proper scaling where 1 unit = approximately 1/10th of the scene width
-- Always include a ground/floor plane for context unless the drawing suggests floating objects
+## INTERPRETATION:
+- Identify and model only the main object; ignore background and unrelated elements.
+- Maintain correct spatial relationships and proportions.
+- Use a logical object hierarchy and scale (1 unit ≈ 1/10 scene width).
+
+## TECHNICAL INSTRUCTIONS:
+- Do not import 'three' (already imported as THREE).
+- For Three.js extensions (e.g., OrbitControls, GLTFLoader), always use ES module imports.
+- For OrbitControls, include at the top:
+    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+    const controls = new OrbitControls(camera, renderer.domElement);
+- Do NOT use THREE.OrbitControls or assume extensions are attached to THREE.
+- Code will run in a Vite (ESM) environment.
+- Set up a camera, ambient and directional lighting, and a ground/floor plane (unless the object is floating).
+- Use realistic materials and textures based on the image.
+- Add subtle animation or rotation to bring the scene to life.
+- Ensure the scene is responsive to container size.
 
 ## RESPONSE FORMAT:
-Your response must contain only valid JavaScript code for the Three.js scene with proper initialization 
-and animation loop. Include code comments explaining your reasoning for major design decisions.
-Wrap your entire code in backticks with the javascript identifier:\`\`\`javascript`
+Return only valid JavaScript code (inside single backticks) with comments for major design decisions.`
 
   const base_text = `Transform this 2D drawing/wireframe into an interactive Three.js 3D scene. 
 I need code that:
@@ -73,12 +69,9 @@ if(image){
 try {
     const response = await client.messages.create({
       model: "claude-3-7-sonnet-20250219",
-      max_tokens: 1024,
+      max_tokens: 4096,
+      system: system_prompt,
       messages: [
-        {
-          role : 'system',
-          content : system_prompt
-        },
         {
           role: 'user',
           content: message_data,
@@ -89,7 +82,7 @@ try {
     const content = response.content[0].text
     console.log("input tokens : ", response.usage.input_tokens)
     console.log("output tokens : ", response.usage.output_tokens)
-
+    
     if(content){
       return {data : content, type : 'completed'}
     }else{
@@ -98,223 +91,223 @@ try {
   } catch (error) {
     console.error('❌ Error:', error.message);
   } 
-    */
+    
 }
 
 
-const output = `
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf5f5f5);
+// const output = `
+// const scene = new THREE.Scene();
+// scene.background = new THREE.Color(0xf5f5f5);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputEncoding = THREE.sRGBEncoding;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
+// const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+// const renderer = new THREE.WebGLRenderer({ antialias: true });
+// renderer.setSize(window.innerWidth, window.innerHeight);
+// renderer.shadowMap.enabled = true;
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+// renderer.outputEncoding = THREE.sRGBEncoding;
+// renderer.toneMapping = THREE.ACESFilmicToneMapping;
+// renderer.toneMappingExposure = 1.2;
 
-document.getElementById('container').appendChild(renderer.domElement);
+// document.getElementById('container').appendChild(renderer.domElement);
 
-// Lighting setup
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-scene.add(ambientLight);
+//         // Lighting setup
+//         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+//         scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-directionalLight.position.set(10, 10, 5);
-directionalLight.castShadow = true;
-directionalLight.shadow.mapSize.width = 2048;
-directionalLight.shadow.mapSize.height = 2048;
-directionalLight.shadow.camera.near = 0.5;
-directionalLight.shadow.camera.far = 50;
-directionalLight.shadow.camera.left = -10;
-directionalLight.shadow.camera.right = 10;
-directionalLight.shadow.camera.top = 10;
-directionalLight.shadow.camera.bottom = -10;
-scene.add(directionalLight);
+//         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+//         directionalLight.position.set(10, 10, 5);
+//         directionalLight.castShadow = true;
+//         directionalLight.shadow.mapSize.width = 2048;
+//         directionalLight.shadow.mapSize.height = 2048;
+//         directionalLight.shadow.camera.near = 0.5;
+//         directionalLight.shadow.camera.far = 50;
+//         directionalLight.shadow.camera.left = -10;
+//         directionalLight.shadow.camera.right = 10;
+//         directionalLight.shadow.camera.top = 10;
+//         directionalLight.shadow.camera.bottom = -10;
+//         scene.add(directionalLight);
 
-const rimLight = new THREE.DirectionalLight(0xffffff, 0.3);
-rimLight.position.set(-5, 3, -5);
-scene.add(rimLight);
+//         const rimLight = new THREE.DirectionalLight(0xffffff, 0.3);
+//         rimLight.position.set(-5, 3, -5);
+//         scene.add(rimLight);
 
-// Create pencil group
-const pencilGroup = new THREE.Group();
-scene.add(pencilGroup);
+//         // Create pencil group
+//         const pencilGroup = new THREE.Group();
+//         scene.add(pencilGroup);
 
-// Pencil body (main yellow/orange cylinder)
-const bodyGeometry = new THREE.CylinderGeometry(0.15, 0.15, 8, 32);
-const bodyMaterial = new THREE.MeshPhongMaterial({ 
-    color: 0xffa500,
-    shininess: 30,
-    specular: 0x444444
-});
-const pencilBody = new THREE.Mesh(bodyGeometry, bodyMaterial);
-pencilBody.rotation.z = Math.PI / 2;
-pencilBody.castShadow = true;
-pencilBody.receiveShadow = true;
-pencilGroup.add(pencilBody);
+//         // Pencil body (main yellow/orange cylinder)
+//         const bodyGeometry = new THREE.CylinderGeometry(0.15, 0.15, 8, 32);
+//         const bodyMaterial = new THREE.MeshPhongMaterial({ 
+//             color: 0xffa500,
+//             shininess: 30,
+//             specular: 0x444444
+//         });
+//         const pencilBody = new THREE.Mesh(bodyGeometry, bodyMaterial);
+//         pencilBody.rotation.z = Math.PI / 2;
+//         pencilBody.castShadow = true;
+//         pencilBody.receiveShadow = true;
+//         pencilGroup.add(pencilBody);
 
-// Ferrule (pink/red metal band)
-const ferruleGeometry = new THREE.CylinderGeometry(0.16, 0.16, 0.8, 32);
-const ferruleMaterial = new THREE.MeshPhongMaterial({ 
-    color: 0xff6b6b,
-    shininess: 80,
-    specular: 0x888888
-});
-const ferrule = new THREE.Mesh(ferruleGeometry, ferruleMaterial);
-ferrule.position.x = -4.4;
-ferrule.rotation.z = Math.PI / 2;
-ferrule.castShadow = true;
-ferrule.receiveShadow = true;
-pencilGroup.add(ferrule);
+//         // Ferrule (pink/red metal band)
+//         const ferruleGeometry = new THREE.CylinderGeometry(0.16, 0.16, 0.8, 32);
+//         const ferruleMaterial = new THREE.MeshPhongMaterial({ 
+//             color: 0xff6b6b,
+//             shininess: 80,
+//             specular: 0x888888
+//         });
+//         const ferrule = new THREE.Mesh(ferruleGeometry, ferruleMaterial);
+//         ferrule.position.x = -4.4;
+//         ferrule.rotation.z = Math.PI / 2;
+//         ferrule.castShadow = true;
+//         ferrule.receiveShadow = true;
+//         pencilGroup.add(ferrule);
 
-// Wood tip section (light wood color)
-const woodTipGeometry = new THREE.CylinderGeometry(0.15, 0.08, 0.6, 32);
-const woodTipMaterial = new THREE.MeshPhongMaterial({ 
-    color: 0xf4e4bc,
-    shininess: 10
-});
-const woodTip = new THREE.Mesh(woodTipGeometry, woodTipMaterial);
-woodTip.position.x = 4.3;
-woodTip.rotation.z = Math.PI / 2;
-woodTip.castShadow = true;
-woodTip.receiveShadow = true;
-pencilGroup.add(woodTip);
+//         // Wood tip section (light wood color)
+//         const woodTipGeometry = new THREE.CylinderGeometry(0.15, 0.08, 0.6, 32);
+//         const woodTipMaterial = new THREE.MeshPhongMaterial({ 
+//             color: 0xf4e4bc,
+//             shininess: 10
+//         });
+//         const woodTip = new THREE.Mesh(woodTipGeometry, woodTipMaterial);
+//         woodTip.position.x = 4.3;
+//         woodTip.rotation.z = Math.PI / 2;
+//         woodTip.castShadow = true;
+//         woodTip.receiveShadow = true;
+//         pencilGroup.add(woodTip);
 
-// Graphite tip (dark gray/black)
-const graphiteGeometry = new THREE.CylinderGeometry(0.02, 0.01, 0.3, 16);
-const graphiteMaterial = new THREE.MeshPhongMaterial({ 
-    color: 0x333333,
-    shininess: 100
-});
-const graphiteTip = new THREE.Mesh(graphiteGeometry, graphiteMaterial);
-graphiteTip.position.x = 4.75;
-graphiteTip.rotation.z = Math.PI / 2;
-graphiteTip.castShadow = true;
-pencilGroup.add(graphiteTip);
+//         // Graphite tip (dark gray/black)
+//         const graphiteGeometry = new THREE.CylinderGeometry(0.02, 0.01, 0.3, 16);
+//         const graphiteMaterial = new THREE.MeshPhongMaterial({ 
+//             color: 0x333333,
+//             shininess: 100
+//         });
+//         const graphiteTip = new THREE.Mesh(graphiteGeometry, graphiteMaterial);
+//         graphiteTip.position.x = 4.75;
+//         graphiteTip.rotation.z = Math.PI / 2;
+//         graphiteTip.castShadow = true;
+//         pencilGroup.add(graphiteTip);
 
-// Add brand text (embossed effect)
-const textGeometry = new THREE.RingGeometry(0.16, 0.17, 8);
-const textMaterial = new THREE.MeshPhongMaterial({ 
-    color: 0xffcc00,
-    transparent: true,
-    opacity: 0.8
-});
-const brandRing = new THREE.Mesh(textGeometry, textMaterial);
-brandRing.position.set(1, 0.17, 0);
-brandRing.rotation.x = Math.PI / 2;
-pencilGroup.add(brandRing);
+//         // Add brand text (embossed effect)
+//         const textGeometry = new THREE.RingGeometry(0.16, 0.17, 8);
+//         const textMaterial = new THREE.MeshPhongMaterial({ 
+//             color: 0xffcc00,
+//             transparent: true,
+//             opacity: 0.8
+//         });
+//         const brandRing = new THREE.Mesh(textGeometry, textMaterial);
+//         brandRing.position.set(1, 0.17, 0);
+//         brandRing.rotation.x = Math.PI / 2;
+//         pencilGroup.add(brandRing);
 
-// Add floating particles for atmosphere
-const particleGeometry = new THREE.SphereGeometry(0.01, 8, 8);
-const particleMaterial = new THREE.MeshBasicMaterial({ 
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0.6
-});
+//         // Add floating particles for atmosphere
+//         const particleGeometry = new THREE.SphereGeometry(0.01, 8, 8);
+//         const particleMaterial = new THREE.MeshBasicMaterial({ 
+//             color: 0xffffff,
+//             transparent: true,
+//             opacity: 0.6
+//         });
+        
+//         const particles = [];
+//         for (let i = 0; i < 20; i++) {
+//             const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+//             particle.position.set(
+//                 (Math.random() - 0.5) * 20,
+//                 (Math.random() - 0.5) * 10,
+//                 (Math.random() - 0.5) * 10
+//             );
+//             particles.push(particle);
+//             scene.add(particle);
+//         }
 
-const particles = [];
-for (let i = 0; i < 20; i++) {
-    const particle = new THREE.Mesh(particleGeometry, particleMaterial);
-    particle.position.set(
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10
-    );
-    particles.push(particle);
-    scene.add(particle);
-}
+//         // Ground plane for shadows
+//         const groundGeometry = new THREE.PlaneGeometry(50, 50);
+//         const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.2 });
+//         const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+//         ground.rotation.x = -Math.PI / 2;
+//         ground.position.y = -2;
+//         ground.receiveShadow = true;
+//         scene.add(ground);
 
-// Ground plane for shadows
-const groundGeometry = new THREE.PlaneGeometry(50, 50);
-const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.2 });
-const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-ground.rotation.x = -Math.PI / 2;
-ground.position.y = -2;
-ground.receiveShadow = true;
-scene.add(ground);
+//         // Simple orbit controls implementation
+//         let isMouseDown = false;
+//         let mouseX = 0;
+//         let mouseY = 0;
+//         let targetRotationX = 0;
+//         let targetRotationY = 0;
+//         let currentRotationX = 0;
+//         let currentRotationY = 0;
 
-// Simple orbit controls implementation
-let isMouseDown = false;
-let mouseX = 0;
-let mouseY = 0;
-let targetRotationX = 0;
-let targetRotationY = 0;
-let currentRotationX = 0;
-let currentRotationY = 0;
+//         renderer.domElement.addEventListener('mousedown', (event) => {
+//             isMouseDown = true;
+//             mouseX = event.clientX;
+//             mouseY = event.clientY;
+//         });
 
-renderer.domElement.addEventListener('mousedown', (event) => {
-    isMouseDown = true;
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-});
+//         renderer.domElement.addEventListener('mousemove', (event) => {
+//             if (isMouseDown) {
+//                 const deltaX = event.clientX - mouseX;
+//                 const deltaY = event.clientY - mouseY;
+//                 targetRotationY += deltaX * 0.01;
+//                 targetRotationX += deltaY * 0.01;
+//                 targetRotationX = Math.max(-Math.PI/2, Math.min(Math.PI/2, targetRotationX));
+//                 mouseX = event.clientX;
+//                 mouseY = event.clientY;
+//             }
+//         });
 
-renderer.domElement.addEventListener('mousemove', (event) => {
-    if (isMouseDown) {
-        const deltaX = event.clientX - mouseX;
-        const deltaY = event.clientY - mouseY;
-        targetRotationY += deltaX * 0.01;
-        targetRotationX += deltaY * 0.01;
-        targetRotationX = Math.max(-Math.PI/2, Math.min(Math.PI/2, targetRotationX));
-        mouseX = event.clientX;
-        mouseY = event.clientY;
-    }
-});
+//         renderer.domElement.addEventListener('mouseup', () => {
+//             isMouseDown = false;
+//         });
 
-renderer.domElement.addEventListener('mouseup', () => {
-    isMouseDown = false;
-});
+//         renderer.domElement.addEventListener('wheel', (event) => {
+//             camera.position.z += event.deltaY * 0.01;
+//             camera.position.z = Math.max(5, Math.min(20, camera.position.z));
+//         });
 
-renderer.domElement.addEventListener('wheel', (event) => {
-    camera.position.z += event.deltaY * 0.01;
-    camera.position.z = Math.max(5, Math.min(20, camera.position.z));
-});
+//         // Camera setup
+//         camera.position.set(8, 3, 10);
+//         camera.lookAt(0, 0, 0);
 
-// Camera setup
-camera.position.set(8, 3, 10);
-camera.lookAt(0, 0, 0);
+//         // Animation loop
+//         function animate() {
+//             requestAnimationFrame(animate);
 
-// Animation loop
-function animate() {
-    requestAnimationFrame(animate);
+//             // Smooth camera rotation
+//             currentRotationX += (targetRotationX - currentRotationX) * 0.05;
+//             currentRotationY += (targetRotationY - currentRotationY) * 0.05;
 
-    // Smooth camera rotation
-    currentRotationX += (targetRotationX - currentRotationX) * 0.05;
-    currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+//             // Update camera position based on rotation
+//             const radius = camera.position.length();
+//             camera.position.x = radius * Math.cos(currentRotationY) * Math.cos(currentRotationX);
+//             camera.position.y = radius * Math.sin(currentRotationX);
+//             camera.position.z = radius * Math.sin(currentRotationY) * Math.cos(currentRotationX);
+//             camera.lookAt(0, 0, 0);
 
-    // Update camera position based on rotation
-    const radius = camera.position.length();
-    camera.position.x = radius * Math.cos(currentRotationY) * Math.cos(currentRotationX);
-    camera.position.y = radius * Math.sin(currentRotationX);
-    camera.position.z = radius * Math.sin(currentRotationY) * Math.cos(currentRotationX);
-    camera.lookAt(0, 0, 0);
+//             // Subtle pencil rotation
+//             pencilGroup.rotation.x += 0.005;
 
-    // Subtle pencil rotation
-    pencilGroup.rotation.x += 0.005;
+//             // Animate particles
+//             particles.forEach((particle, index) => {
+//                 particle.position.y += Math.sin(Date.now() * 0.001 + index) * 0.002;
+//                 particle.position.x += Math.cos(Date.now() * 0.0008 + index) * 0.001;
+//             });
 
-    // Animate particles
-    particles.forEach((particle, index) => {
-        particle.position.y += Math.sin(Date.now() * 0.001 + index) * 0.002;
-        particle.position.x += Math.cos(Date.now() * 0.0008 + index) * 0.001;
-    });
+//             // Subtle light animation
+//             directionalLight.intensity = 0.8 + Math.sin(Date.now() * 0.001) * 0.1;
 
-    // Subtle light animation
-    directionalLight.intensity = 0.8 + Math.sin(Date.now() * 0.001) * 0.1;
+//             renderer.render(scene, camera);
+//         }
 
-    renderer.render(scene, camera);
-}
+//         // Handle window resize
+//         function handleResize() {
+//             camera.aspect = window.innerWidth / window.innerHeight;
+//             camera.updateProjectionMatrix();
+//             renderer.setSize(window.innerWidth, window.innerHeight);
+//         }
 
-// Handle window resize
-function handleResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
+//         window.addEventListener('resize', handleResize);
 
-window.addEventListener('resize', handleResize);
-
-// Start animation
-animate();
-`;
+// // Start animation
+// animate();
+// `;
 

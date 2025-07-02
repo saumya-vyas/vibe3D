@@ -14,7 +14,7 @@ export async function enhance({image}) {
 
     // Prepare the content parts
     const contents = [
-      { text: "Convert this rough sketch into a stylish image of a structured low-poly 3D model with proper lighting. Include only the object in the image, with nothing else." },
+      { text: "Trying to generate poly 3D model, So convert this rough sketch into a simple stylish image of a structured low-poly 3D model with proper lighting. Include only the object in the image, with nothing else." },
       {
         inlineData: {
           mimeType: "image/png",
