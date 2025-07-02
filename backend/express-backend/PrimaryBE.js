@@ -17,6 +17,7 @@ app.use(cors({
 //routes
 app.post('/enhance', async (req, res) => {
     const {image} = req.body;
+    console.log('at post request(enhance)')
     try{    
         //get taskId as object
         const taskId = await taskService.handleTask({image, type : 'enhance'});
@@ -48,7 +49,7 @@ app.post('/parse', async (req, res) => {
 
 async function main(){
     try{
-        const httpServer = app.listen(process.env.PORT);
+        const httpServer = app.listen(process.env.PORT || 3000);
         setupWebSocketServer(httpServer)
     }catch(err){
         console.error('Error connecting to Redis:', err);

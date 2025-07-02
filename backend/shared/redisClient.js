@@ -1,9 +1,13 @@
 import { createClient } from 'redis'
 import { v4 } from 'uuid'
 
+import dotenv from 'dotenv'
+dotenv.config()
+
 class RedisClient{
     constructor(){
         //for blocking operations (e.g. lPush, brPop)
+        console.log('process.env.REDIS_URL : ', process.env.REDIS_URL)
         this.redis = createClient({
             url: process.env.REDIS_URL
         });
@@ -17,8 +21,13 @@ class RedisClient{
             url: process.env.REDIS_URL
         });
 
-        this.connect()
+        this.connectPromise = this.connect();
         console.log('Connected to Redis')
+
+        this.redis.on('end', () => console.warn('Redis (redis) connection closed'));
+        this.hsetRedis.on('end', () => console.warn('Redis (hsetRedis) connection closed'));
+        this.publisher.on('end', () => console.warn('Redis (publisher) connection closed'));
+        this.subscriber.on('end', () => console.warn('Redis (subscriber) connection closed'));
     }
 
     async connect() {
@@ -30,16 +39,20 @@ class RedisClient{
 
     //Task queue method
     async addTask(data, type){
+        await this.connectPromise;
         const taskId = v4()
 
         await this.hsetRedis.hSet(`${type}:${taskId}:data`, 'image', data)
         await this.redis.lPush(`${type}:queue`, taskId)
+
+        console.log('added task to redis')
        
         return taskId;
     }
 
 
     async getNextTaskFromQueues() {
+        await this.connectPromise;
         // brPop can take multiple keys and returns the first available
         const result = await this.redis.brPop(['enhance:queue', 'render:queue'], 0);
         if (!result) return null;
@@ -65,6 +78,7 @@ class RedisClient{
 
     // Cleanup
     async cleanupTask(taskId) {
+        await this.connectPromise;
         const multi = this.hsetRedis.multi();
         
         // Delete task data
@@ -82,11 +96,13 @@ class RedisClient{
 
     //Publish to channel
     async publish(channel, message){
+        await this.connectPromise;
         await this.publisher.publish(channel, JSON.stringify(message));
     }
 
     //Subscribe to channel
     async subscribeToTask(taskId, ws) {
+        await this.connectPromise;
         try {
             const statusChannel = `enhance:${taskId}:status`;
             const errorChannel = `enhance:${taskId}:error`;
@@ -161,6 +177,7 @@ class RedisClient{
     }
     
     async subscribeToRenderTask(taskId, ws) {
+        await this.connectPromise;
         try {
             const statusChannel = `render:${taskId}:status`;
             const errorChannel = `render:${taskId}:error`;
