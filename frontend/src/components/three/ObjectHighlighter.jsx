@@ -1,3 +1,9 @@
+    //  This file is based on code from vibe-draw (Copyright (C) [2025] [martin226])
+    //  and is licensed under the GNU Affero General Public License v3.0 or later.
+    //  Modified by [saumya-vyas], [2026]
+    //  See LICENSE for details.
+
+
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'

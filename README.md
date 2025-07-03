@@ -56,7 +56,6 @@ graph TB
   - Google Gemini (image enhancement, code extraction)
   - Anthropic Claude (3D model code generation)
 
-
 ## Project Structure
 
 ```
@@ -73,7 +72,6 @@ vibe3D/
 │   └── shared/
 └── README.md
 ```
-
 
 ## Quick Start
 
@@ -105,3 +103,10 @@ cd ../worker && node index.js
 cd ../../frontend && npm run dev
 ```
 
+## Acknowledgements
+
+Parts of this project are based on code from [martin226/vibe-draw](https://github.com/martin226/vibe-draw).
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0. See the [LICENSE](LICENSE) file for details.

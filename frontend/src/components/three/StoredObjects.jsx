@@ -1,3 +1,8 @@
+    //  This file is based on code from vibe-draw (Copyright (C) [2025] [martin226])
+    //  and is licensed under the GNU Affero General Public License v3.0 or later.
+    //  Modified by [saumya-vyas], [2026]
+    //  See LICENSE for details.
+
 import { useEffect, useMemo, useRef } from 'react'
 import { useObjectStore } from '@/store/useStore'
 import { useStore } from '@/store/useStore'
