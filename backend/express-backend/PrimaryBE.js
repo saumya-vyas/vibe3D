@@ -39,12 +39,10 @@ app.post('/render3d', async ( req, res) => {
 
 app.post('/parse', async (req, res) => {
     const {threeJsCode} = req.body;
+    console.log(threeJsCode)
     const extractedCode = await extractCode({threeJsCode})
     res.json({content : extractedCode})
 })
-
-
-
 
 
 async function main(){

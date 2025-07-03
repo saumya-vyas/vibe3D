@@ -1,6 +1,6 @@
-# Vibe-Draw 🎨
+# Vibe3D 🎨
 
-A real-time drawing and image enhancement application that uses Google's Gemini Pro Vision to enhance your drawings.
+A real-time drawing and 2D-to-3D enhancement application. Draw on a canvas, enhance your sketches with AI, and generate interactive 3D models from your drawings.
 
 ## Architecture Overview
 
@@ -15,9 +15,9 @@ graph TB
     subgraph Backend
         E[Express Server] --> F[Task Service]
         F --> G[Redis Client]
-        
         H[Worker Process] --> G
         H --> I[Image Enhancer]
+        H --> K[render3D Service]
     end
 
     subgraph Data Store
@@ -31,76 +31,36 @@ graph TB
 
 ## Features
 
-- 🎨 Real-time drawing canvas
-- ✨ AI-powered image enhancement
-- 🔄 Real-time updates via WebSocket
+- 🎨 Real-time drawing canvas (2D/3D toggle)
+- ✨ AI-powered image enhancement (Google Gemini)
+- 📤 Parallel image enhancement with Worker-Thread
+- 🧊 2D-to-3D model generation (Anthropic Claude)
+- 🔄 Live updates via WebSocket
 - 🎯 Asynchronous task processing
-- 🎭 2D/3D view toggle
+
+## How it Works
+
+1. **Draw**: Create sketches on the canvas (powered by tldraw).
+2. **Enhance**: Select a drawing and enhance it using Google Gemini for a cleaner, stylized image.
+3. **Render 3D**: Convert the enhanced image to a 3D model using Anthropic Claude, which generates Three.js code.
+4. **Interact**: View and manipulate the 3D model in the browser (Three.js + React Three Fiber).
 
 ## Tech Stack
 
 ### Frontend
-- React
-- tldraw (Canvas)
-- Zustand (State Management)
-- WebSocket for real-time updates
+- React, tldraw, Zustand, Three.js, @react-three/fiber, WebSocket
 
 ### Backend
-- Express.js
-- Redis (Task Queue & Pub/Sub)
-- Worker Threads
-- Google Gemini Pro Vision API
+- Express.js, Redis (Task Queue & Pub/Sub), Worker Threads
+- **AI APIs:**
+  - Google Gemini (image enhancement, code extraction)
+  - Anthropic Claude (3D model code generation)
 
-## Quick Start
-
-1. Clone the repository
-```bash
-git clone https://github.com/yourusername/vibe-draw.git
-cd vibe-draw
-```
-
-2. Install dependencies
-```bash
-# Install frontend dependencies
-cd frontend
-npm install
-
-# Install backend dependencies
-cd ../backend
-npm install
-```
-
-3. Set up environment variables
-```bash
-# In backend/.env
-REDIS_URL=redis://localhost:6379
-GOOGLE_API_KEY=your_api_key
-```
-
-4. Start the services
-```bash
-# Start Redis (if not running)
-redis-server
-
-# Start Express backend
-cd backend/express-backend
-npm start
-
-# Start Worker
-cd backend/worker
-npm start
-
-# Start Frontend
-cd frontend
-npm run dev
-```
-
-5. Open http://localhost:5173 in your browser
 
 ## Project Structure
 
 ```
-vibe-draw/
+vibe3D/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
@@ -111,26 +71,37 @@ vibe-draw/
 │   ├── express-backend/
 │   ├── worker/
 │   └── shared/
-└── docs/
+└── README.md
 ```
 
-## Documentation
 
-Detailed documentation is available in the `docs` directory:
+## Quick Start
 
-- [Architecture Overview](docs/architecture/overview.md)
-- [Frontend Guide](docs/architecture/frontend.md)
-- [Backend Guide](docs/architecture/backend.md)
-- [API Reference](docs/api/endpoints.md)
+1. Clone the repository
+```bash
+git clone https://github.com/saumya-vyas/vibe3D.git
+cd vibe3D
+```
 
-## Contributing
+2. Install dependencies
+```bash
+# Frontend
+cd frontend
+npm install
+# Backend
+cd ../backend
+npm install
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Set up environment variables:
+   - **Backend:** In `backend/.env` (see code for required keys: REDIS_URL, ENHANCER_API, EXTRACTER_API, ANTHROPIC_API_KEY)
+   - **Frontend:** In `frontend/.env` (set variables like VITE_API_URL or any other required by your frontend)
 
-## License
+4. Start services:
+```bash
+redis-server (Docker)
+cd backend/express-backend && node PrimaryBE.js
+cd ../worker && node index.js
+cd ../../frontend && npm run dev
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
